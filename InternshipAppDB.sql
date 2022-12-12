@@ -318,12 +318,12 @@ SELECT * FROM MemberInternshipField --check if data about their internship and f
 
 ---8---
 UPDATE InternInternshipField
-	SET Status = 'Kicked' WHERE( InternId IN
-	(SELECT ih.internid from InternHomework ih
-		where ih.internid = internid
-    group by ih.internId, (select h.Internshipfieldid from homework h 
-						   where h.homeworkid = ih.homeworkid) 
-				having (AVG(ih.grade) < 2.4)))
+	SET Status = 'Kicked' 
+	WHERE( InternId IN(
+	SELECT ih.InternId from InternHomework ih
+	WHERE ih.InternId = InternId
+    GROUP BY ih.InternId, (SELECT h.InternshipFieldId FROM Homework h WHERE h.HomeworkId = ih.HomeworkId) 
+	HAVING (AVG(ih.Grade) < 2.4)))
 	
 SELECT * FROM InternInternshipField
 
