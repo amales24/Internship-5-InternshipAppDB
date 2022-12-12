@@ -317,8 +317,15 @@ SELECT * FROM Internship --check if references to them are set to null
 SELECT * FROM MemberInternshipField --check if data about their internship and fields are deleted
 
 ---8---
-
+UPDATE InternInternshipField
+	SET Status = 'Kicked' WHERE( InternId IN
+	(SELECT ih.internid from InternHomework ih
+		where ih.internid = internid
+    group by ih.internId, (select h.Internshipfieldid from homework h 
+						   where h.homeworkid = ih.homeworkid) 
+				having (AVG(ih.grade) < 2.4)))
 	
+SELECT * FROM InternInternshipField
 
 
 
