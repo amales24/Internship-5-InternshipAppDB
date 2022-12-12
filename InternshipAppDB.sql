@@ -73,6 +73,16 @@ CREATE TABLE InternInternshipField(
 	Status VARCHAR(8) CHECK (Status IN ('Intern', 'Finished', 'Kicked')),
 	PRIMARY KEY (InternId, InternshipFieldId)
 )
+---
+
+ALTER TABLE InternInternshipField
+   DROP CONSTRAINT interninternshipfield_internid_fkey,
+   ADD  CONSTRAINT interninternshipfield_internid_fkey
+   FOREIGN KEY (InternId) REFERENCES Intern (InternId) ON DELETE CASCADE,
+   
+   DROP CONSTRAINT interninternshipfield_internshipfieldid_fkey,
+   ADD  CONSTRAINT interninternshipfield_internshipfieldid_fkey
+   FOREIGN KEY (InternshipFieldId) REFERENCES InternshipField (Id) ON DELETE CASCADE;
 
 ---
 CREATE TABLE MemberInternshipField(
@@ -86,6 +96,11 @@ ALTER TABLE MemberInternshipField
    DROP CONSTRAINT memberinternshipfield_memberid_fkey,
    ADD  CONSTRAINT memberinternshipfield_memberid_fkey
    FOREIGN KEY (MemberId) REFERENCES Member (MemberId) ON DELETE CASCADE;
+   
+ALTER TABLE MemberInternshipField
+   DROP CONSTRAINT memberinternshipfield_internshipfieldid_fkey,
+   ADD  CONSTRAINT memberinternshipfield_internshipfieldid_fkey
+   FOREIGN KEY (InternshipFieldId) REFERENCES InternshipField (Id) ON DELETE CASCADE;
 
 ---
 CREATE TABLE Homework(
@@ -96,13 +111,21 @@ CREATE TABLE Homework(
 
 ---
 CREATE TABLE InternHomework(
-	InternId INT REFERENCES Intern(InternId) ON DELETE SET NULL,
-	HomeworkId INT REFERENCES Homework(HomeworkId) ON DELETE SET NULL,
+	InternId INT REFERENCES Intern(InternId),
+	HomeworkId INT REFERENCES Homework(HomeworkId),
 	Grade INT CHECK (Grade IN (1, 2, 3, 4, 5)),
 	RectifierId INT REFERENCES Member(MemberId) ON DELETE SET NULL,
 	PRIMARY KEY (InternId, HomeworkId)
 )
 
+ALTER TABLE InternHomework
+   DROP CONSTRAINT internhomework_internid_fkey,
+   ADD  CONSTRAINT internhomework_internid_fkey
+   FOREIGN KEY (InternId) REFERENCES Intern (InternId) ON DELETE CASCADE,
+   
+   DROP CONSTRAINT internhomework_homeworkid_fkey,
+   ADD  CONSTRAINT internhomework_homeworkid_fkey
+   FOREIGN KEY (HomeworkId) REFERENCES Homework (HomeworkId) ON DELETE CASCADE;
 
 ---Adding data to tables---
 
